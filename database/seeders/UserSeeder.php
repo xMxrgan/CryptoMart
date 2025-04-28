@@ -32,6 +32,5 @@ class UserSeeder extends Seeder
             'password' => bcrypt('password789'),
         ]);
 
-        // Aggiungi altri utenti come necessario
     }
 }

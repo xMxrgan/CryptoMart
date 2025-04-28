@@ -1,18 +1,32 @@
 <?php
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Product extends Model
+return new class extends Migration
 {
-    protected $fillable = ['name', 'quantity', 'description', 'price', 'category_id'];
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('description');
+            $table->decimal('price', 8, 2);
+            $table->integer('quantity');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade'); 'categories';
+            $table->timestamps();
+        });
+    }
 
     /**
-     * Relazione con Category (un prodotto appartiene a una categoria)
+     * Reverse the migrations.
      */
-    public function category()
+    public function down(): void
     {
-        return $this->belongsTo(Category::class);
+        Schema::dropIfExists('products');
     }
-}
+};

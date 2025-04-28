@@ -37,7 +37,5 @@ class ProductSeeder extends Seeder
             'quantity' => 30,
             'category_id' => 1, // Assicurati che la categoria con ID 1 esista
         ]);
-
-        // Puoi aggiungere altri prodotti come necessario
     }
 }
