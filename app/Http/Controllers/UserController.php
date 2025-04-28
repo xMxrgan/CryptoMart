@@ -12,15 +12,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return User::all();
     }
 
     /**
@@ -28,15 +20,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return User::create($request->all());
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(string $id)
     {
-        return User::findOrFail($user->id);
+        return User::findOrFail($id);
     }
 
     /**
