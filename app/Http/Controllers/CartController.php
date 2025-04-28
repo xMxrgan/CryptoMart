@@ -16,31 +16,19 @@ class CartController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('cart.create');
-                return response()->json(['message' => 'Cart created successfully']);
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        return Cart::create($request->only(['product_id', 'quantity']));
-                return response()->json(['message' => 'Cart stored successfully']);
+        return Cart::create($request->all());
     }
-
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        $cart = Cart::findOrFail($id);
-        return $cart;
+        return Cart::find($id);
     }
 
     /**
@@ -49,7 +37,7 @@ class CartController extends Controller
     public function update(Request $request, string $id)
     {
         $cart = Cart::findOrFail($id);
-        $cart->update($request->only(['user_id','product_id', 'quantity', 'price']));
+        $cart->update($request->all());
         return $cart;
     }
 
@@ -58,8 +46,7 @@ class CartController extends Controller
      */
     public function destroy(string $id)
     {
-        $cart = Cart::findOrFail($id);
-        $cart->delete();
-        return response()->json(['message' => 'Cart item deleted successfully']);
+        Cart::findOrFail($id)->delete();
+        return response()->json(['message' => 'Cart deleted successfully'], 200);
     }
 }

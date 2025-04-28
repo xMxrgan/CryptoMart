@@ -20,7 +20,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        return Order::create($request->only(['user_id', 'product_id', 'quantity', 'total_price']));
+        return Order::create($request->all());
     }
 
     /**
@@ -28,7 +28,6 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-
         return Order::findOrFail($id);
     }
 
@@ -37,8 +36,8 @@ class OrderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $order = Order::findOrFail($id);
-        $order->update($request->only(['user_id', 'product_id', 'quantity', 'total_price']));
+        $order = Order::findOrFail($order->id);
+        $order->update($request->all());
         return $order;
     }
 
@@ -47,6 +46,7 @@ class OrderController extends Controller
      */
     public function destroy(string $id)
     {
-        Order::destroy($id);
+        Order::destroy($order->id);
+        return response()->json(['message' => 'Order deleted successfully'], 200);
     }
 }

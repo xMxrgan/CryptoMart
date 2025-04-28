@@ -20,7 +20,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        Product::create($request->only(['name', 'description', 'price', 'stock']));
+        Product::create($request->all());
     }
 
     /**
@@ -28,7 +28,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        return Product::findOrFail($id);
+        Product::findOrFail($id);
     }
 
     /**
@@ -36,8 +36,8 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $product = Product::findOrFail($product->id);
-        $product->update($request->only(['name', 'description', 'price', 'stock']));
+        $product = Product::findOrFail($id);
+        $product->update($request->all());
         return $product;
     }
 
