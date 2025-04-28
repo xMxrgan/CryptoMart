@@ -1,17 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
+
+use App\Models\Order;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return User::all();
+        return Order::all();
     }
 
     /**
@@ -19,7 +20,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        User::create($request->only(['name', 'description', 'price', 'stock']));
+        return Order::create($request->only(['user_id', 'product_id', 'quantity', 'total_price']));
     }
 
     /**
@@ -27,7 +28,8 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        return User::findOrFail($id);
+
+        return Order::findOrFail($id);
     }
 
     /**
@@ -35,9 +37,9 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $product = User::findOrFail($product->id);
-        $product->update($request->only(['name', 'description', 'price', 'stock']));
-        return $product;
+        $order = Order::findOrFail($id);
+        $order->update($request->only(['user_id', 'product_id', 'quantity', 'total_price']));
+        return $order;
     }
 
     /**
@@ -45,6 +47,6 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        User::findOrFail($id)->delete();
+        Order::destroy($id);
     }
 }
