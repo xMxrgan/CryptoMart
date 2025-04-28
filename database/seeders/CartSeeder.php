@@ -35,6 +35,5 @@ class CartSeeder extends Seeder
             'totalCost' => 29.97,
         ]);
 
-        // Aggiungi altri carrelli secondo necessità...
     }
 }
