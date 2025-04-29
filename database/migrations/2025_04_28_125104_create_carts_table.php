@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users'); // riferimento all'utente
-            $table->foreignId('product_id')->references('id')->on('products'); // riferimento al prodotto
             $table->integer('quantity');              // quantità del prodotto
             $table->decimal('totalCost', 8, 2);       // costo totale (esempio: 999999.99)
+
+            $table->foreignId('user_id')->references('id')->on('users'); // riferimento all'utente
+
+            $table->foreignId('product_id')->references('id')->on('products'); // riferimento al prodotto
+
+
             $table->timestamps();
         });
     }

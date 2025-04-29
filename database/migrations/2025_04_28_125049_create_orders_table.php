@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade'); // Relazione con users
-            $table->unsignedBigInteger('product_id');
-            $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade'); // Relazione con products
             $table->string('status'); // Status dell'ordine (es. "in elaborazione", "completato")
             $table->decimal('total_cost', 8, 2); // Costo totale dell'ordine
+
+            $table->foreignId('user_id')->references('id')->on('users'); // Relazione con users
+
+            $table->foreignId('product_id')->references('id')->on('products'); // Relazione con products
+
             $table->timestamps();
         });
     }
