@@ -13,5 +13,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
+Route::apiResources([
+    "products" => \App\Http\Controllers\ProductController::class,
+]);
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
