@@ -12,7 +12,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return Order::all();
+        $orders = Order::all();
+        return response()->json($orders, 200);
     }
 
     /**
@@ -20,7 +21,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        return Order::create($request->all());
+        $order = Order::create($request->all());
+        return response()->json($order, 201); // 201 Created
     }
 
     /**
@@ -28,7 +30,13 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        return Order::findOrFail($id);
+        $order = Order::find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        return response()->json($order, 200);
     }
 
     /**
@@ -36,9 +44,15 @@ class OrderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $order = Order::findOrFail($order->id);
+        $order = Order::find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
         $order->update($request->all());
-        return $order;
+
+        return response()->json($order, 200);
     }
 
     /**
@@ -46,7 +60,14 @@ class OrderController extends Controller
      */
     public function destroy(string $id)
     {
-        Order::destroy($order->id);
+        $order = Order::find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        $order->delete();
+
         return response()->json(['message' => 'Order deleted successfully'], 200);
     }
 }

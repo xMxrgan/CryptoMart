@@ -12,7 +12,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::all();
+        $users = User::all();
+        return response()->json($users, 200);
     }
 
     /**
@@ -20,7 +21,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        return User::create($request->all());
+        $user = User::create($request->all());
+        return response()->json($user, 201); // 201 Created
     }
 
     /**
@@ -28,7 +30,13 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        return User::findOrFail($id);
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        return response()->json($user, 200);
     }
 
     /**
@@ -36,9 +44,15 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
         $user->update($request->all());
-        return $user;
+
+        return response()->json($user, 200);
     }
 
     /**
@@ -46,7 +60,14 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        User::findOrFail($id)->destroy();
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $user->delete();
+
         return response()->json(['message' => 'User deleted successfully'], 200);
     }
 }

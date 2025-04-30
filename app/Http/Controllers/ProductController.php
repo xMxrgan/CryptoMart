@@ -12,7 +12,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        $products = Product::all();
+        return response()->json($products, 200);
     }
 
     /**
@@ -20,7 +21,8 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        Product::create($request->all());
+        $product = Product::create($request->all());
+        return response()->json($product, 201); // 201 Created
     }
 
     /**
@@ -28,7 +30,13 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        Product::findOrFail($id);
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        return response()->json($product, 200);
     }
 
     /**
@@ -36,9 +44,15 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
         $product->update($request->all());
-        return $product;
+
+        return response()->json($product, 200);
     }
 
     /**
@@ -46,6 +60,14 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        Product::findOrFail($id)->delete();
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        $product->delete();
+
+        return response()->json(['message' => 'Product deleted successfully'], 200);
     }
 }

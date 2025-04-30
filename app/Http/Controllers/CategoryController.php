@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-use function PHPUnit\Framework\returnSelf;
 
 class CategoryController extends Controller
 {
@@ -13,7 +12,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::all();
+        $categories = Category::all();
+        return response()->json($categories, 200);
     }
 
     /**
@@ -21,7 +21,8 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-
+        $category = Category::create($request->all());
+        return response()->json($category, 201); // 201 Created
     }
 
     /**
@@ -29,24 +30,44 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        return Category::find($id);
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+
+        return response()->json($category, 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, string $id)
     {
-        $category = Category::find($category->id);
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+
         $category->update($request->all());
-        return $category;
+
+        return response()->json($category, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(string $id)
     {
-        //
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+
+        $category->delete();
+
+        return response()->json(['message' => 'Category deleted successfully'], 200);
     }
 }

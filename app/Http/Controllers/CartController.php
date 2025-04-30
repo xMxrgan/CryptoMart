@@ -12,7 +12,8 @@ class CartController extends Controller
      */
     public function index()
     {
-        return Cart::all();
+        $carts = Cart::all();
+        return response()->json($carts, 200);
     }
 
     /**
@@ -20,7 +21,8 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        return Cart::create($request->all());
+        $cart = Cart::create($request->all());
+        return response()->json($cart, 201); // 201 Created
     }
 
     /**
@@ -28,7 +30,13 @@ class CartController extends Controller
      */
     public function show(string $id)
     {
-        return Cart::find($id);
+        $cart = Cart::find($id);
+
+        if (!$cart) {
+            return response()->json(['message' => 'Cart not found'], 404);
+        }
+
+        return response()->json($cart, 200);
     }
 
     /**
@@ -36,9 +44,15 @@ class CartController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $cart = Cart::findOrFail($id);
+        $cart = Cart::find($id);
+
+        if (!$cart) {
+            return response()->json(['message' => 'Cart not found'], 404);
+        }
+
         $cart->update($request->all());
-        return $cart;
+
+        return response()->json($cart, 200);
     }
 
     /**
@@ -46,7 +60,14 @@ class CartController extends Controller
      */
     public function destroy(string $id)
     {
-        Cart::findOrFail($id)->delete();
+        $cart = Cart::find($id);
+
+        if (!$cart) {
+            return response()->json(['message' => 'Cart not found'], 404);
+        }
+
+        $cart->delete();
+
         return response()->json(['message' => 'Cart deleted successfully'], 200);
     }
 }
